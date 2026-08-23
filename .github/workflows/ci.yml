@@ -1,0 +1,67 @@
+name: CI Pipeline (Full-Stack Tests & Build)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-tests:
+    name: Backend Test Suites
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Evaluator Test Suite
+        run: python backend/tests/test_evaluator.py
+
+      - name: Run Scalability & Privacy Test Suite
+        run: python backend/tests/test_scalability_and_privacy.py
+
+      - name: Run Educator & Track 3 Test Suite
+        run: python backend/tests/test_educator_and_track3.py
+
+      - name: Run Multiplayer & Assessment Test Suite
+        run: python backend/tests/test_multiplayer_and_assessment.py
+
+      - name: Run Infinite Studio AI Test Suite
+        run: python backend/tests/test_infinite_studio.py
+
+  frontend-build:
+    name: Frontend Production Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run TypeScript & Vite Build
+        run: |
+          cd frontend
+          npm run build
