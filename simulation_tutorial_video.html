@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Epoch Nexus Academy — Master Simulation Video Tutorial & Infinite Studio Guide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.4), inset 0 0 15px rgba(245, 158, 11, 0.2); }
+      50% { box-shadow: 0 0 35px rgba(56, 189, 248, 0.7), inset 0 0 20px rgba(56, 189, 248, 0.3); }
+    }
+    .video-glow { animation: pulse-glow 5s infinite; }
+    .cursor-sim {
+      pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    .audio-bar {
+      transition: height 0.1s ease;
+    }
+  </style>
+</head>
+<body class="bg-[#060911] text-slate-100 min-h-screen flex flex-col font-sans select-none">
+
+  <!-- Top Navigation Header -->
+  <header class="bg-[#0c101c] border-b border-slate-800 px-6 py-3 flex items-center justify-between shadow-xl">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-cyan-500 flex items-center justify-center font-bold text-slate-950 shadow-lg shadow-amber-500/20 text-lg">
+        🏛️
+      </div>
+      <div>
+        <h1 class="text-sm font-bold text-slate-100 tracking-wide flex items-center gap-2">
+          <span>EPOCH NEXUS ACADEMY</span>
+          <span class="text-[10px] px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-950 to-cyan-950 text-amber-300 border border-amber-800/80 font-mono">
+            MASTER SIMULATION VIDEO & STUDIO
+          </span>
+        </h1>
+        <p class="text-[11px] text-slate-400">Interactive Video Walkthrough: 4 Core Eras • Infinite AI Track Studio • Multiplayer Conclave • Standards</p>
+      </div>
+    </div>
+    
+    <!-- Top Right Controls -->
+    <div class="flex items-center gap-2.5 text-xs">
+      <!-- Voice Waveform Indicator -->
+      <div id="waveformArea" class="hidden md:flex items-center gap-1 bg-slate-950 px-2.5 py-1.5 rounded-lg border border-slate-800">
+        <span class="text-[10px] font-mono text-cyan-400 mr-1">AUDIO</span>
+        <div class="w-1 bg-cyan-400 h-2 rounded-full audio-bar"></div>
+        <div class="w-1 bg-cyan-400 h-4 rounded-full audio-bar"></div>
+        <div class="w-1 bg-amber-400 h-3 rounded-full audio-bar"></div>
+        <div class="w-1 bg-cyan-400 h-5 rounded-full audio-bar"></div>
+        <div class="w-1 bg-cyan-400 h-2 rounded-full audio-bar"></div>
+      </div>
+
+      <button id="toggleVoiceBtn" onclick="toggleVoiceover()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition font-medium">
+        <span id="voiceIcon">🔊</span>
+        <span id="voiceLabel">Voice Narration: ON</span>
+      </button>
+
+      <a href="frontend/index.html" target="_blank" class="px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold transition shadow-lg flex items-center gap-1.5">
+        <span>Launch Interactive App ↗</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Video Container Layout -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+    
+    <!-- Video Player Column (3 cols) -->
+    <div class="lg:col-span-3 flex flex-col gap-3">
+      
+      <!-- Video Screen Frame (16:9 Aspect Ratio) -->
+      <div id="videoContainer" class="relative w-full aspect-video bg-[#090d18] rounded-xl border border-slate-700/80 overflow-hidden shadow-2xl video-glow flex flex-col justify-between">
+        
+        <!-- Simulated UI Video Screen Contents -->
+        <div id="screenStage" class="relative flex-1 w-full h-full p-4 flex flex-col justify-between overflow-hidden">
+          
+          <!-- Virtual OS Top Header -->
+          <div class="flex items-center justify-between pb-2 border-b border-slate-800 text-[11px]">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500 inline-block shadow-sm"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500 inline-block shadow-sm"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block shadow-sm"></span>
+              <span id="screenStageTitle" class="font-bold text-amber-300 ml-2 tracking-wide truncate">
+                Chapter 1: The Tri-Pillar Architecture & Statecraft Philosophy
+              </span>
+            </div>
+            <div class="flex items-center gap-3 font-mono text-[10px] text-slate-400">
+              <span id="screenBadge" class="bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded border border-cyan-800">
+                Core Architecture • 508 BCE – 2050+ CE
+              </span>
+              <span class="text-emerald-400 font-bold flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block"></span>
+                <span>● 4K 60FPS</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Virtual Interactive Split-Pane Workspace -->
+          <div class="flex-1 my-3 grid grid-cols-1 md:grid-cols-2 gap-3 min-h-0">
+            
+            <!-- Left Pane: Animated Simulation Viewport -->
+            <div class="bg-[#050811] rounded-lg border border-slate-800 p-3 flex flex-col justify-between relative overflow-hidden shadow-inner">
+              <div class="flex items-center justify-between text-[11px] font-semibold text-slate-300 mb-1 z-10">
+                <span id="simTitle" class="truncate font-bold text-slate-200">🏛️ Historical Simulation Viewport</span>
+                <span id="simStatus" class="font-mono text-amber-400 text-[10px] bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/80">Simulating State...</span>
+              </div>
+
+              <!-- Animated SVG Simulation Viewport -->
+              <div id="simCanvasArea" class="flex-1 flex items-center justify-center relative py-1">
+                <!-- SVG Canvas injected dynamically -->
+              </div>
+
+              <!-- Live Simulation Metric Chips -->
+              <div id="simMetricsArea" class="grid grid-cols-3 gap-1.5 pt-2 border-t border-slate-800 text-[10px] font-mono z-10">
+                <!-- Metrics injected dynamically -->
+              </div>
+            </div>
+
+            <!-- Right Pane: Animated Code Editor & Output Console -->
+            <div class="bg-[#060a14] rounded-lg border border-slate-800 p-3 flex flex-col justify-between relative overflow-hidden shadow-inner">
+              <div class="flex items-center justify-between pb-1 mb-1 border-b border-slate-800 text-[11px] font-mono">
+                <span class="text-blue-400 flex items-center gap-1.5 font-bold">
+                  <span>📄</span> <span id="editorFilename">agora_voting.py</span>
+                </span>
+                <span id="testSummaryBadge" class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold">
+                  ✓ Verified Sandbox
+                </span>
+              </div>
+
+              <!-- Code Typing Preview Area -->
+              <pre id="codePreview" class="flex-1 font-mono text-[10.5px] leading-relaxed text-cyan-200 overflow-hidden bg-[#03050a] p-2.5 rounded border border-slate-900 custom-scrollbar shadow-inner"></pre>
+
+              <!-- Live Execution Console Area -->
+              <div id="consoleArea" class="bg-[#03060d] rounded p-2 border border-slate-800/80 mt-2 text-[10px] font-mono min-h-[55px] flex flex-col justify-between">
+                <div id="consoleOutput" class="text-slate-300 truncate leading-tight">> Ready to evaluate student code submission.</div>
+                <div class="flex justify-between items-center text-[9px] text-slate-400 border-t border-slate-900 pt-1 mt-1 font-mono">
+                  <span id="hashDisplay" class="text-slate-500">Hash: 0x...</span>
+                  <span class="text-emerald-400 font-bold" id="execSpeed">0.00ms</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Synchronized Speech Subtitles Banner -->
+          <div class="bg-black/90 backdrop-blur-md rounded-lg border border-slate-700/80 px-4 py-2.5 text-center text-xs md:text-sm font-medium text-amber-200 min-h-[48px] flex items-center justify-center shadow-xl">
+            <span id="subtitleText" class="leading-relaxed">
+              Welcome to Epoch Nexus Academy. This master video tutorial explains how to navigate simulations, write civic logic code, generate infinite AI tracks, and earn verifiable L2 credentials.
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Simulated Mouse Cursor -->
+        <div id="virtualCursor" class="cursor-sim absolute top-1/2 left-1/2 w-6 h-6 z-40 transform -translate-x-1 -translate-y-1">
+          <svg viewBox="0 0 24 24" class="w-6 h-6 filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+            <polygon points="0,0 0,19 5.5,14 10,23 13,21.5 8.5,12.5 15,12.5" fill="#f59e0b" stroke="#ffffff" stroke-width="1.5" />
+          </svg>
+        </div>
+
+        <!-- Video Player Bottom Controls Bar -->
+        <div class="bg-[#080c18] border-t border-slate-800 px-4 py-2.5 flex flex-col gap-1.5 z-20">
+          
+          <!-- Timeline Scrubber Bar -->
+          <div class="relative w-full h-2.5 bg-slate-800 rounded-full overflow-hidden cursor-pointer shadow-inner" onclick="seekVideo(event)">
+            <div id="timelineProgress" class="h-full bg-gradient-to-r from-amber-500 via-rose-500 to-cyan-400 transition-all duration-100" style="width: 0%"></div>
+          </div>
+
+          <!-- Buttons & Time Display -->
+          <div class="flex items-center justify-between text-xs text-slate-300 pt-0.5">
+            <div class="flex items-center gap-3">
+              <button id="playPauseBtn" onclick="togglePlayPause()" class="p-1 hover:text-amber-400 transition text-sm">
+                <span id="playIcon">⏸</span>
+              </button>
+              <button onclick="restartVideo()" class="p-1 hover:text-slate-100 transition text-sm" title="Restart Tutorial">
+                ↺
+              </button>
+              <span class="font-mono text-[11px] text-slate-400">
+                <span id="currentTime" class="text-slate-200 font-bold">0:00</span> / <span id="totalTime">3:30</span>
+              </span>
+              <span id="chapterTitle" class="font-bold text-amber-300 truncate max-w-xs ml-2 text-[11px]">
+                Chapter 1: The Tri-Pillar Architecture
+              </span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="setSpeed(1)" class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 hover:bg-slate-700 speed-btn active font-bold text-amber-300">1.0x</button>
+              <button onclick="setSpeed(1.25)" class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 hover:bg-slate-700 speed-btn">1.25x</button>
+              <button onclick="setSpeed(1.5)" class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 hover:bg-slate-700 speed-btn">1.5x</button>
+              <button onclick="setSpeed(2)" class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 hover:bg-slate-700 speed-btn">2.0x</button>
+              <button onclick="toggleFullscreen()" class="p-1 hover:text-slate-100 ml-2" title="Toggle Fullscreen">⛶</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Explanation Banner Card -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 text-xs text-slate-300 flex items-center justify-between shadow-lg">
+        <div class="flex items-center gap-3.5">
+          <div class="text-3xl">🎬</div>
+          <div>
+            <div class="font-bold text-slate-100 text-sm">Automated Interactive Video Tutorial & Master Demonstration</div>
+            <p class="text-slate-400 text-[11px]">This interactive video walkthrough simulates live code execution, real-time procedural animations, and Web Speech audio narration across all 7 platform modules.</p>
+          </div>
+        </div>
+        <button onclick="restartVideo()" class="px-3.5 py-2 bg-gradient-to-r from-amber-600 to-yellow-600 text-slate-950 font-bold rounded-lg hover:from-amber-500 hover:to-yellow-500 transition shadow whitespace-nowrap">
+          Replay Full Tutorial
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Chapter Navigation & Guide Sidebar (1 col) -->
+    <div class="flex flex-col gap-3">
+      <div class="bg-[#0c101c] border border-slate-800 rounded-xl p-4 shadow-xl">
+        <h2 class="text-xs font-bold text-slate-200 mb-3 flex items-center justify-between pb-2 border-b border-slate-800">
+          <span>TUTORIAL CHAPTERS</span>
+          <span class="text-[10px] font-mono text-cyan-400">7 Modules (3:30)</span>
+        </h2>
+
+        <div class="space-y-1.5 text-xs max-h-[380px] overflow-y-auto custom-scrollbar" id="chapterList">
+          <!-- Chapter Buttons injected dynamically -->
+        </div>
+      </div>
+
+      <!-- Platform Features Card -->
+      <div class="bg-[#0c101c] border border-slate-800 rounded-xl p-4 text-xs space-y-2.5 shadow-xl">
+        <h3 class="font-bold text-amber-300 text-[11px] uppercase tracking-wider flex items-center gap-1.5">
+          <span>⚡ Platform Capabilities</span>
+        </h3>
+        <div class="space-y-1.5 text-[11px] text-slate-300">
+          <div class="flex items-start gap-2">
+            <span class="text-emerald-400 font-bold">✓</span>
+            <span><strong>Infinite AI Studio</strong>: Natural language scenario synthesis.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-emerald-400 font-bold">✓</span>
+            <span><strong>Multiplayer Conclave</strong>: Real-time WebSockets & Quadratic Voting.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-emerald-400 font-bold">✓</span>
+            <span><strong>AP Standards Matrix</strong>: Automated Canvas/Google Classroom exports.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-emerald-400 font-bold">✓</span>
+            <span><strong>Pyodide Wasm Sandbox</strong>: 96%+ in-browser compute offload.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-emerald-400 font-bold">✓</span>
+            <span><strong>Soulbound ERC-5192</strong>: Verifiable cryptographic L2 badges.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // 7 Comprehensive Chapters covering the full platform
+    const CHAPTERS = [
+      {
+        id: 0,
+        title: "1. The Tri-Pillar Philosophy",
+        startTime: 0,
+        endTime: 30,
+        narration: "Welcome to Epoch Nexus Academy. ENA bridges the historic divide in education by uniting World History lore, Political Science checks and balances, and STEM Computer Science into an interactive statecraft simulator.",
+        stageTitle: "Welcome to Epoch Nexus Academy",
+        badge: "Tri-Pillar Pedagogical Matrix",
+        filename: "statecraft_matrix.py",
+        cursorPos: { x: 50, y: 50 },
+        code: `# ==========================================================\n# Epoch Nexus Academy: Tri-Pillar Statecraft Simulator\n# Pillar 1: World History (High-Stakes Narrative Lore)\n# Pillar 2: Political Science (Quorums, Checks & Balances)\n# Pillar 3: STEM CS (Python Algorithms, State Machines, Web3)\n# ==========================================================`,
+        svg: `<svg viewBox="0 0 240 110" class="w-full h-28"><circle cx="120" cy="55" r="40" fill="#0f172a" stroke="#f59e0b" stroke-width="2.5"/><text x="120" y="50" fill="#f8fafc" font-size="9" font-weight="bold" text-anchor="middle">EPOCH NEXUS</text><text x="120" y="64" fill="#38bdf8" font-size="7" font-weight="bold" text-anchor="middle">TRI-PILLAR ENGINE</text></svg>`,
+        metrics: { "Pillars": "3 Core", "Eras": "4 Multi-Era", "Standards": "AP / CSTA" },
+        console: "> System initialized. Loading Track 1: Classical Antiquity...",
+        hash: "0xgenesis...0001",
+        execTime: "0.01ms"
+      },
+      {
+        id: 1,
+        title: "2. Track 1: Athenian Agora & Boolean Quorum",
+        startTime: 30,
+        endTime: 65,
+        narration: "In Track 1, students model Athenian democracy on the Pnyx. Code checks for Tribunician Veto power first, then verifies citizen quorum threshold before passing decrees.",
+        stageTitle: "Track 1: Athenian Agora & Roman Veto",
+        badge: "508 BCE • Classical Antiquity",
+        filename: "agora_voting.py",
+        cursorPos: { x: 75, y: 35 },
+        code: `def tally_civic_vote(votes: dict, quorum: int, veto_active: bool) -> str:\n    if veto_active:\n        return "VETOED"\n    total = votes.get("yes", 0) + votes.get("no", 0)\n    if total < quorum:\n        return "QUORUM_FAILED"\n    return "PASSED" if votes["yes"] > votes["no"] else "REJECTED"`,
+        svg: `<svg viewBox="0 0 240 110" class="w-full h-28"><rect x="25" y="35" width="190" height="65" fill="#1e293b" rx="4"/><polygon points="25,35 120,12 215,35" fill="#334155"/><rect x="45" y="40" width="10" height="60" fill="#f8fafc"/><rect x="80" y="40" width="10" height="60" fill="#f8fafc"/><rect x="115" y="40" width="10" height="60" fill="#f8fafc"/><rect x="150" y="40" width="10" height="60" fill="#f8fafc"/><rect x="185" y="40" width="10" height="60" fill="#f8fafc"/><circle cx="120" cy="75" r="12" fill="#f59e0b" class="animate-pulse"/></svg>`,
+        metrics: { "Citizens": "6,420", "Quorum": "6,000", "Result": "PASSED ✓" },
+        console: "> Running test assertion suite...\n✓ Quorum 6000 check: PASSED\n✓ Roman Tribunician Veto: PASSED",
+        hash: "0xe0a180f5cc940f9e...69cf",
+        execTime: "0.42ms"
+      },
+      {
+        id: 2,
+        title: "3. Track 2: Renaissance Maritime Ciphers",
+        startTime: 65,
+        endTime: 100,
+        narration: "Track 2 takes students to the Age of Discovery. Students decrypt Venetian diplomatic cables using Vigenère polyalphabetic cipher disks and optimize trade tariffs.",
+        stageTitle: "Track 2: Mediterranean Cryptography & Trade",
+        badge: "1560 CE • Age of Discovery",
+        filename: "maritime_ciphers.py",
+        cursorPos: { x: 65, y: 60 },
+        code: `def decrypt_diplomatic_cable(ciphertext: str, cipher_type: str, key) -> str:\n    result = []\n    for idx, ch in enumerate(ciphertext):\n        if 'A' <= ch <= 'Z':\n            k_shift = ord(str(key)[idx % len(str(key))].upper()) - ord('A')\n            result.append(chr((ord(ch) - ord('A') - k_shift) % 26 + ord('A')))\n    return "".join(result)`,
+        svg: `<svg viewBox="0 0 240 110" class="w-full h-28"><path d="M 15,75 Q 120,60 225,75" stroke="#38bdf8" stroke-width="2.5" fill="none"/><polygon points="90,70 150,70 135,90 105,90" fill="#854d0e"/><polygon points="118,70 118,25 140,48" fill="#f8fafc"/><text x="120" y="20" fill="#38bdf8" font-size="8" font-family="monospace" text-anchor="middle">VENETIAN GALLEON</text></svg>`,
+        metrics: { "Fleet Value": "£28,450", "Tariff": "5% Hanseatic", "Status": "DECRYPTED ✓" },
+        console: "> Decrypting Ottoman Route Cable...\n✓ Caesar Shift: PASSED\n✓ Vigenère Polyalphabetic: PASSED",
+        hash: "0xc261edc649b7cda4...2116",
+        execTime: "0.68ms"
+      },
+      {
+        id: 3,
+        title: "4. Track 3: Victorian Factory Acts & Lovelace",
+        startTime: 100,
+        endTime: 135,
+        narration: "Track 3 models industrial labor movements. Students implement discrete-time simulation loops for factory productivity, install smog scrubbers, and compute Ada Lovelace polynomial sequences.",
+        stageTitle: "Track 3: Industrial Revolution & Lovelace Loops",
+        badge: "1847 CE • Industrial Manchester",
+        filename: "industrial_sim.py",
+        cursorPos: { x: 70, y: 40 },
+        code: `class IndustrialEconomySim:\n    def tick(self):\n        daily_output = min(self.workers * self.hours * 0.5, self.factory_capacity)\n        self.capital += (daily_output * 2.0 - self.workers * self.wage)\n        self.strike_risk = max(0.0, (100.0 - self.worker_satisfaction) / 100.0)\n        self.smog_index += daily_output * 0.05`,
+        svg: `<svg viewBox="0 0 240 110" class="w-full h-28"><rect x="35" y="50" width="60" height="55" fill="#334155"/><polygon points="35,50 65,28 95,50" fill="#475569"/><rect x="85" y="18" width="10" height="32" fill="#1e293b"/><circle cx="90" cy="12" r="6" fill="#64748b" class="animate-ping"/><circle cx="170" cy="60" r="25" fill="#d97706"/><circle cx="170" cy="60" r="14" fill="#0f172a"/><text x="170" y="64" fill="#fef3c7" font-size="8" font-weight="bold" text-anchor="middle">1843</text></svg>`,
+        metrics: { "Output": "250 u/day", "Morale": "85%", "Smog": "14 AQI (Scrubbed)" },
+        console: "> Advancing Victorian Economic Simulator...\n✓ Factory Act 8-Hour Workday: PASSED\n✓ Smog Abatement: PASSED\n✓ Ada Lovelace Sequence: PASSED",
+        hash: "0xcc8eacc6adafefdc...ce93",
+        execTime: "0.91ms"
+      },
+      {
+        id: 4,
+        title: "5. Track 4: Quadratic Voting & Soulbound Badges",
+        startTime: 135,
+        endTime: 165,
+        narration: "In Track 4, multilateral diplomats use Quadratic Voting to ratify treaties. Once test suites pass, the platform automatically mints non-transferable Soulbound ERC-5192 mastery credentials.",
+        stageTitle: "Track 4: UN Quadratic Voting & L2 Minting",
+        badge: "2030+ CE • Modern Governance",
+        filename: "quadratic_voting.py",
+        cursorPos: { x: 45, y: 70 },
+        code: `class QuadraticVotingProtocol:\n    def cast_vote(self, delegate: str, proposal_id: str, votes: int) -> int:\n        cost = votes * votes  # Quadratic cost formula: Cost = V^2\n        if self.delegate_balances[delegate] < cost:\n            raise ValueError("Insufficient voice credits")\n        self.delegate_balances[delegate] -= cost\n        return cost`,
+        svg: `<svg viewBox="0 0 240 110" class="w-full h-28"><circle cx="120" cy="55" r="40" fill="#0f172a" stroke="#a855f7" stroke-width="2.5"/><polygon points="120,25 145,45 145,70 120,88 95,70 95,45" fill="#6b21a8"/><circle cx="120" cy="55" r="10" fill="#fbbf24"/><text x="120" y="100" fill="#c084fc" font-size="7" font-family="monospace" text-anchor="middle">QUADRATIC VOTING (V²)</text></svg>`,
+        metrics: { "Delegates": "193 Nations", "Quorum": "20 / 20", "Consensus": "RATIFIED ✓" },
+        console: "> Verifying Quadratic Voice Credits...\n✓ Voice Credit Over-spend Guard: PASSED\n✓ ERC-5192 Soulbound Badge Minted: Token #1004",
+        hash: "0x6deb6f1847affc74...85ba",
+        execTime: "1.12ms"
+      },
+      {
+        id: 5,
+        title: "6. Infinite Track Studio & AI Scenario Synthesizer",
+        startTime: 165,
+        endTime: 195,
+        narration: "With the Infinite Track Studio, teachers and students can generate an unlimited universe of simulations. Type any prompt like Ancient Egypt Nile Flooding or Space Colonization to synthesize playable code tracks, tests, and procedural state visuals.",
+        stageTitle: "Infinite Studio: AI Scenario & Track Synthesizer",
+        badge: "AI Generation • Infinite Possibilities",
+        filename: "nile_grain_hydraulics.py",
+        cursorPos: { x: 50, y: 40 },
+        code: `def calculate_nile_grain_reserve(flood_cubits: float, demand: int, reserve_pct: float) -> int:\n    if flood_cubits < 12.0:\n        return int(demand * reserve_pct * 1.5)  # Emergency drought quota\n    return int(demand * 1.3 * reserve_pct)`,
+        svg: `<svg viewBox="0 0 240 110" class="w-full h-28"><polygon points="30,85 70,30 110,85" fill="#d97706"/><polygon points="85,85 125,45 165,85" fill="#b45309"/><path d="M 10,95 Q 120,80 230,95" stroke="#38bdf8" stroke-width="6" fill="none"/><text x="120" y="20" fill="#f59e0b" font-size="8" font-weight="bold" text-anchor="middle">🌾 NILE HYDRAULIC RESERVES</text></svg>`,
+        metrics: { "Prompt": "Egypt Nile", "Difficulty": "Intermediate", "Status": "SYNTHESIZED ⚡" },
+        console: "> Synthesizing AI Scenario: 'Ancient Egypt Nile Flooding'...\n✓ Generated Starter Code, Tests, and Dialogue Trees\n✓ Dynamic Procedural Canvas Deployed",
+        hash: "0xinfinitestudio...7710",
+        execTime: "0.18ms"
+      },
+      {
+        id: 6,
+        title: "7. Multiplayer Conclave & Standards Assessment",
+        startTime: 195,
+        endTime: 210,
+        narration: "Finally, students collaborate in real-time WebSockets deliberation chambers, while administrators monitor AP Standards mastery and export 1-click gradebooks to Canvas and Google Classroom.",
+        stageTitle: "Multiplayer Conclave & Institutional Dashboard",
+        badge: "District Assessment & Real-Time WebSockets",
+        filename: "standards_pipeline.py",
+        cursorPos: { x: 50, y: 60 },
+        code: `# Automated Rubric & Standards Assessment Pipeline\nAP_STANDARDS_MAPPING = {\n    "AP-EURO-4.2": {"mastery": 94.5, "track": 2},\n    "AP-GOV-1.3":  {"mastery": 96.2, "track": [1, 4]},\n    "AP-CSP-3.1":  {"mastery": 97.8, "track": [1, 2, 3, 4]}\n}`,
+        svg: `<svg viewBox="0 0 240 110" class="w-full h-28"><rect x="30" y="70" width="30" height="30" fill="#f59e0b"/><rect x="80" y="50" width="30" height="50" fill="#38bdf8"/><rect x="130" y="35" width="30" height="65" fill="#10b981"/><rect x="180" y="25" width="30" height="75" fill="#a855f7"/><text x="120" y="15" fill="#f8fafc" font-size="8" font-weight="bold" text-anchor="middle">DISTRICT MASTERY: 95.4%</text></svg>`,
+        metrics: { "Scholars": "5,240", "AP Mastery": "95.4%", "Lobbies": "12 Active" },
+        console: "> Real-Time WebSocket Lobby Sync...\n✓ Floor Deliberation Stream Active\n✓ 1-Click CSV LMS Export Generated",
+        hash: "0xdistrictmastery...8820",
+        execTime: "0.32ms"
+      }
+    ];
+
+    let currentChapterIndex = 0;
+    let currentTimeSec = 0;
+    let isPlaying = true;
+    let playbackSpeed = 1.0;
+    let voiceoverEnabled = true;
+    let currentUtterance = null;
+
+    // Render Chapter Sidebar
+    const chapterListEl = document.getElementById("chapterList");
+    CHAPTERS.forEach((ch, idx) => {
+      const btn = document.createElement("button");
+      btn.className = `w-full text-left p-2.5 rounded-lg border transition flex items-center justify-between chapter-btn ${idx === 0 ? 'bg-amber-950/60 border-amber-500 text-amber-200' : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200'}`;
+      btn.id = `chapBtn-${idx}`;
+      btn.onclick = () => jumpToChapter(idx);
+      btn.innerHTML = `
+        <div class="truncate pr-2 font-medium">${ch.title}</div>
+        <span class="font-mono text-[10px] text-slate-500">${Math.floor(ch.startTime / 60)}:${(ch.startTime % 60).toString().padStart(2, '0')}</span>
+      `;
+      chapterListEl.appendChild(btn);
+    });
+
+    function updateUI(ch) {
+      document.getElementById("screenStageTitle").innerText = ch.stageTitle;
+      document.getElementById("screenBadge").innerText = ch.badge;
+      document.getElementById("editorFilename").innerText = ch.filename;
+      document.getElementById("simTitle").innerText = ch.title.split(':')[1] || ch.title;
+      document.getElementById("codePreview").innerText = ch.code;
+      document.getElementById("consoleOutput").innerText = ch.console;
+      document.getElementById("hashDisplay").innerText = "Hash: " + ch.hash;
+      document.getElementById("execSpeed").innerText = ch.execTime;
+      document.getElementById("subtitleText").innerText = ch.narration;
+      document.getElementById("chapterTitle").innerText = ch.title;
+      document.getElementById("simCanvasArea").innerHTML = ch.svg;
+      
+      // Update metrics chips
+      const metricsEl = document.getElementById("simMetricsArea");
+      metricsEl.innerHTML = "";
+      Object.entries(ch.metrics).forEach(([k, v]) => {
+        metricsEl.innerHTML += `
+          <div class="bg-slate-900 p-1.5 rounded border border-slate-800 shadow-inner">
+            <span class="text-slate-400 block text-[9px]">${k}:</span>
+            <strong class="text-amber-300 font-mono text-[10.5px]">${v}</strong>
+          </div>
+        `;
+      });
+
+      // Update cursor position smoothly
+      const cursor = document.getElementById("virtualCursor");
+      cursor.style.left = `${ch.cursorPos.x}%`;
+      cursor.style.top = `${ch.cursorPos.y}%`;
+
+      // Highlight active chapter button
+      document.querySelectorAll(".chapter-btn").forEach((b, i) => {
+        if (i === currentChapterIndex) {
+          b.className = "w-full text-left p-2.5 rounded-lg border transition flex items-center justify-between chapter-btn bg-gradient-to-r from-amber-950/80 to-slate-900 border-amber-500 text-amber-200 shadow-md font-bold";
+        } else {
+          b.className = "w-full text-left p-2.5 rounded-lg border transition flex items-center justify-between chapter-btn bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200";
+        }
+      });
+
+      // Speak narration if enabled
+      speakNarration(ch.narration);
+    }
+
+    function speakNarration(text) {
+      if (!voiceoverEnabled || !('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      currentUtterance = new SpeechSynthesisUtterance(text);
+      currentUtterance.rate = playbackSpeed * 1.05;
+      currentUtterance.pitch = 1.0;
+      window.speechSynthesis.speak(currentUtterance);
+    }
+
+    function toggleVoiceover() {
+      voiceoverEnabled = !voiceoverEnabled;
+      document.getElementById("voiceLabel").innerText = voiceoverEnabled ? "Voice Narration: ON" : "Voice Narration: OFF";
+      document.getElementById("voiceIcon").innerText = voiceoverEnabled ? "🔊" : "🔇";
+      if (!voiceoverEnabled && ('speechSynthesis' in window)) {
+        window.speechSynthesis.cancel();
+      } else if (voiceoverEnabled) {
+        speakNarration(CHAPTERS[currentChapterIndex].narration);
+      }
+    }
+
+    function togglePlayPause() {
+      isPlaying = !isPlaying;
+      document.getElementById("playIcon").innerText = isPlaying ? "⏸" : "▶";
+      if (!isPlaying && ('speechSynthesis' in window)) {
+        window.speechSynthesis.pause();
+      } else if (isPlaying && ('speechSynthesis' in window)) {
+        window.speechSynthesis.resume();
+      }
+    }
+
+    function restartVideo() {
+      currentTimeSec = 0;
+      currentChapterIndex = 0;
+      isPlaying = true;
+      document.getElementById("playIcon").innerText = "⏸";
+      updateUI(CHAPTERS[0]);
+    }
+
+    function jumpToChapter(idx) {
+      currentChapterIndex = idx;
+      currentTimeSec = CHAPTERS[idx].startTime;
+      updateUI(CHAPTERS[idx]);
+    }
+
+    function setSpeed(speed) {
+      playbackSpeed = speed;
+      document.querySelectorAll(".speed-btn").forEach(b => {
+        b.className = "px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 hover:bg-slate-700 speed-btn";
+      });
+      event.target.className = "px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 hover:bg-slate-700 speed-btn active font-bold text-amber-300";
+      if (currentUtterance && ('speechSynthesis' in window)) {
+        speakNarration(CHAPTERS[currentChapterIndex].narration);
+      }
+    }
+
+    function seekVideo(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = clickX / rect.width;
+      currentTimeSec = Math.floor(pct * 210);
+      for (let i = 0; i < CHAPTERS.length; i++) {
+        if (currentTimeSec >= CHAPTERS[i].startTime && currentTimeSec < CHAPTERS[i].endTime) {
+          currentChapterIndex = i;
+          updateUI(CHAPTERS[i]);
+          break;
+        }
+      }
+    }
+
+    function toggleFullscreen() {
+      const container = document.getElementById("videoContainer");
+      if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(err => alert(err.message));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Master Animation Loop (10 ticks per second)
+    setInterval(() => {
+      if (!isPlaying) return;
+      currentTimeSec += (0.1 * playbackSpeed);
+      
+      if (currentTimeSec >= 210) {
+        currentTimeSec = 0;
+        currentChapterIndex = 0;
+      }
+
+      // Check for chapter change
+      for (let i = 0; i < CHAPTERS.length; i++) {
+        if (currentTimeSec >= CHAPTERS[i].startTime && currentTimeSec < CHAPTERS[i].endTime) {
+          if (currentChapterIndex !== i) {
+            currentChapterIndex = i;
+            updateUI(CHAPTERS[i]);
+          }
+          break;
+        }
+      }
+
+      // Update timecode display
+      const mins = Math.floor(currentTimeSec / 60);
+      const secs = Math.floor(currentTimeSec % 60);
+      document.getElementById("currentTime").innerText = `${mins}:${secs.toString().padStart(2, '0')}`;
+      
+      const pct = (currentTimeSec / 210) * 100;
+      document.getElementById("timelineProgress").style.width = `${pct}%`;
+    }, 100);
+
+    // Initial Load
+    updateUI(CHAPTERS[0]);
+  </script>
+</body>
+</html>

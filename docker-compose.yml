@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # Presentation Layer: React 18 + Vite PWA + WebAssembly Engine
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+  # Application Core: FastAPI Microservices & Simulation State Engine
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://chronos:chronos_secret@postgres:5432/chronos_db
+      - REDIS_URL=redis://redis:6379/0
+      - EVM_RPC_URL=https://rpc-amoy.polygon.technology/
+    depends_on:
+      - postgres
+      - redis
+
+  # Transactional User DB: PostgreSQL (rosters, progress, audit trails)
+  postgres:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: chronos
+      POSTGRES_PASSWORD: chronos_secret
+      POSTGRES_DB: chronos_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Game State Cache: Redis (real-time lobbies & active session state)
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
