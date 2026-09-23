@@ -10,6 +10,8 @@
 
 > **Epoch Nexus Academy (ENA)** is an educational platform synthesizing **World History**, **Political Science & Civics**, and **STEM Computer Science**. Students navigate historical inflection points through branching narratives, a living **Minecraft-style 3D Voxel World**, and an integrated safe in-browser Python coding sandbox. Completed mastery milestones issue verifiable Soulbound digital credentials on EVM-compatible L2 networks.
 
+📖 **[Official Interactive Field Manual (MANUAL.html)](MANUAL.html)**: Professional interactive guide with sidebar navigation, visual diagrams, and curriculum walkthroughs.
+
 ---
 
 ## 🌟 The Core Idea: "History Meets Codecraft"
