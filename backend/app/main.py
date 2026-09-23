@@ -158,8 +158,24 @@ async def websocket_endpoint(websocket: WebSocket, lobby_id: str):
         manager.disconnect(lobby_id, websocket)
         await manager.broadcast_lobby_state(lobby_id)
 
-@app.get("/")
-def health_check():
+# =========================================================================
+# PRODUCTION & DESKTOP STATIC ASSETS SERVING (React 18 + SPA Routing)
+# =========================================================================
+import os
+import sys
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+
+# Detect PyInstaller bundle directory or source directory
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    BASE_DIR = sys._MEIPASS
+else:
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+FRONTEND_DIST = os.path.join(BASE_DIR, "frontend", "dist")
+
+@app.get("/api/health")
+def api_health_check():
     return {
         "service": "Epoch Nexus Academy Engine",
         "status": "Operational",
@@ -169,6 +185,31 @@ def health_check():
         "wasm_sandbox": "Ready"
     }
 
+if os.path.exists(FRONTEND_DIST):
+    assets_dir = os.path.join(FRONTEND_DIST, "assets")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    images_dir = os.path.join(FRONTEND_DIST, "images")
+    if os.path.exists(images_dir):
+        app.mount("/images", StaticFiles(directory=images_dir), name="images")
+
+    @app.get("/")
+    async def serve_index():
+        return FileResponse(os.path.join(FRONTEND_DIST, "index.html"))
+
+    @app.get("/{full_path:path}")
+    async def serve_spa_route(full_path: str):
+        file_path = os.path.join(FRONTEND_DIST, full_path)
+        if os.path.isfile(file_path):
+            return FileResponse(file_path)
+        return FileResponse(os.path.join(FRONTEND_DIST, "index.html"))
+else:
+    @app.get("/")
+    def fallback_health_check():
+        return api_health_check()
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+

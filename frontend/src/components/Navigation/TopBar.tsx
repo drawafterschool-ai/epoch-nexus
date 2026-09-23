@@ -1,5 +1,5 @@
 import React from 'react';
-import { Landmark, Shield, Award, Wallet, CheckCircle2, BookOpen, GraduationCap, Users2, BarChart3, Sparkles, Zap } from 'lucide-react';
+import { Landmark, Shield, Award, Wallet, CheckCircle2, BookOpen, GraduationCap, Users2, BarChart3, Sparkles, Zap, Swords, AlertTriangle } from 'lucide-react';
 import { TrackData } from '../../tracks';
 
 interface TopBarProps {
@@ -15,6 +15,9 @@ interface TopBarProps {
   onOpenStandardsDashboard: () => void;
   onOpenInvestorShowcase: () => void;
   onOpenTrackStudio: () => void;
+  onOpenTournament: () => void;
+  onTriggerCrisis: () => void;
+  crisisActive: boolean;
   walletConnected: boolean;
   walletAddress: string;
   onConnectWallet: () => void;
@@ -33,6 +36,9 @@ export const TopBar: React.FC<TopBarProps> = ({
   onOpenStandardsDashboard,
   onOpenInvestorShowcase,
   onOpenTrackStudio,
+  onOpenTournament,
+  onTriggerCrisis,
+  crisisActive,
   walletConnected,
   walletAddress,
   onConnectWallet
@@ -111,6 +117,30 @@ export const TopBar: React.FC<TopBarProps> = ({
         >
           <BarChart3 className="w-4 h-4 text-amber-400" />
           <span>Standards</span>
+        </button>
+
+        {/* Faction Tournament Button */}
+        <button
+          onClick={onOpenTournament}
+          className="flex items-center gap-1.5 bg-gradient-to-r from-rose-900/80 to-amber-900/80 hover:from-rose-800 hover:to-amber-800 border border-amber-600/50 text-amber-200 px-2.5 py-1 rounded-md text-xs font-bold transition shadow-sm"
+          title="Open Classroom Faction Tournament (Live Team Competition)"
+        >
+          <Swords className="w-3.5 h-3.5 text-amber-400" />
+          <span>Tournament ⚔️</span>
+        </button>
+
+        {/* Dynamic Crisis Trigger Button */}
+        <button
+          onClick={onTriggerCrisis}
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold border transition ${
+            crisisActive
+              ? 'bg-rose-600 text-white border-rose-400 animate-pulse shadow-rose-900/50 shadow-lg'
+              : 'bg-rose-950/60 hover:bg-rose-900/70 border-rose-800 text-rose-300'
+          }`}
+          title="Inject Dynamic Historical Crisis Shock"
+        >
+          <AlertTriangle className={`w-3.5 h-3.5 ${crisisActive ? 'text-white' : 'text-rose-400'}`} />
+          <span>{crisisActive ? 'Crisis Active!' : 'Crisis Shock ⚠️'}</span>
         </button>
 
         {/* Educator Suite Button */}

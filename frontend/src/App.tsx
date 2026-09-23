@@ -15,9 +15,13 @@ import { InstitutionalAdminDashboard } from './components/Assessment/Institution
 import { InvestorShowcaseModal } from './components/Investor/InvestorShowcaseModal';
 import { InfiniteStudioModal } from './components/Studio/InfiniteStudioModal';
 import { DynamicCustomSim } from './components/Simulation/DynamicCustomSim';
+import { ThreeSimulationCanvas } from './components/Simulation/3D/ThreeSimulationCanvas';
+import { ThreeVoxelSandbox } from './components/Simulation/Voxel/ThreeVoxelSandbox';
+import { CrisisEventBanner } from './components/Crisis/CrisisEventBanner';
+import { FactionTournamentModal } from './components/Tournament/FactionTournamentModal';
 import { TRACKS, TrackData } from './tracks';
 import { runCodeSandbox, ExecutionResult } from './engine/sandbox/wasmRunner';
-import { BookOpen, HelpCircle, CheckCircle2 } from 'lucide-react';
+import { BookOpen, HelpCircle, CheckCircle2, Box, Layers } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [tracksList, setTracksList] = useState<TrackData[]>(TRACKS);
@@ -46,6 +50,9 @@ export const App: React.FC = () => {
   const [isStandardsModalOpen, setIsStandardsModalOpen] = useState<boolean>(false);
   const [isInvestorModalOpen, setIsInvestorModalOpen] = useState<boolean>(false);
   const [isStudioModalOpen, setIsStudioModalOpen] = useState<boolean>(false);
+  const [isTournamentOpen, setIsTournamentOpen] = useState<boolean>(false);
+  const [crisisActive, setCrisisActive] = useState<boolean>(false);
+  const [simulationMode, setSimulationMode] = useState<'voxel' | '3d' | '2d'>('voxel');
   const [activeTab, setActiveTab] = useState<'briefing' | 'dialogue' | 'hints'>('briefing');
 
   const handleCodeChange = (newCode: string | undefined) => {
@@ -133,9 +140,20 @@ export const App: React.FC = () => {
         onOpenStandardsDashboard={() => setIsStandardsModalOpen(true)}
         onOpenInvestorShowcase={() => setIsInvestorModalOpen(true)}
         onOpenTrackStudio={() => setIsStudioModalOpen(true)}
+        onOpenTournament={() => setIsTournamentOpen(true)}
+        onTriggerCrisis={() => setCrisisActive(prev => !prev)}
+        crisisActive={crisisActive}
         walletConnected={walletConnected}
         walletAddress={walletAddress}
         onConnectWallet={() => setWalletConnected(!walletConnected)}
+      />
+
+      {/* Dynamic Historical Crisis Banner */}
+      <CrisisEventBanner
+        trackId={currentTrackId}
+        isActive={crisisActive}
+        onDismiss={() => setCrisisActive(false)}
+        onSolveCrisis={handleLoadSolution}
       />
 
       {/* Main Workspace Layout (2x2 Grid) */}
@@ -248,24 +266,71 @@ export const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Top-Right: Interactive Historical Simulation Canvas */}
-        <div className="h-full">
-          {currentTrackId === 1 && <AgoraSim isRunning={isRunning} testPassed={isTrackPassed} />}
-          {currentTrackId === 2 && <RenaissanceMapSim isRunning={isRunning} testPassed={isTrackPassed} />}
-          {currentTrackId === 3 && <IndustrialCitySim isRunning={isRunning} testPassed={isTrackPassed} />}
-          {currentTrackId === 4 && <TreatyRoomSim isRunning={isRunning} testPassed={isTrackPassed} />}
-          {currentTrackId > 4 && (
-            <DynamicCustomSim
-              title={currentTrack.title}
-              era={currentTrack.era}
-              civicsFocus={currentTrack.civicsFocus}
-              stemFocus={currentTrack.stemFocus}
+        {/* Top-Right: Interactive Historical Simulation Canvas (Voxel, 3D WebGL, or Classic 2D) */}
+        <div className="h-full relative overflow-hidden rounded-lg">
+          {simulationMode === 'voxel' ? (
+            <ThreeVoxelSandbox
+              trackId={currentTrackId}
+              isRunning={isRunning}
               testPassed={isTrackPassed}
+              onToggle3DMode={() => setSimulationMode('3d')}
+              onToggleClassicMode={() => setSimulationMode('2d')}
             />
+          ) : simulationMode === '3d' ? (
+            <div className="h-full relative">
+              <div className="absolute top-2 right-14 z-10">
+                <button
+                  onClick={() => setSimulationMode('voxel')}
+                  className="px-2 py-1 rounded-md bg-emerald-700 hover:bg-emerald-600 text-white text-[10px] font-bold shadow-md flex items-center gap-1 transition"
+                >
+                  <Layers className="w-3 h-3" />
+                  <span>Voxel Mode</span>
+                </button>
+              </div>
+              <ThreeSimulationCanvas
+                trackId={currentTrackId}
+                isRunning={isRunning}
+                testPassed={isTrackPassed}
+                crisisActive={crisisActive}
+                onToggleClassicMode={() => setSimulationMode('2d')}
+              />
+            </div>
+          ) : (
+            <div className="h-full relative">
+              <div className="absolute top-2 right-2 z-10 flex items-center gap-1">
+                <button
+                  onClick={() => setSimulationMode('voxel')}
+                  className="px-2.5 py-1 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold shadow-md flex items-center gap-1 transition"
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Voxel Minecraft</span>
+                </button>
+                <button
+                  onClick={() => setSimulationMode('3d')}
+                  className="px-2.5 py-1 rounded-md bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold shadow-md flex items-center gap-1 transition"
+                >
+                  <Box className="w-3.5 h-3.5" />
+                  <span>3D WebGL</span>
+                </button>
+              </div>
+              {currentTrackId === 1 && <AgoraSim isRunning={isRunning} testPassed={isTrackPassed} />}
+              {currentTrackId === 2 && <RenaissanceMapSim isRunning={isRunning} testPassed={isTrackPassed} />}
+              {currentTrackId === 3 && <IndustrialCitySim isRunning={isRunning} testPassed={isTrackPassed} />}
+              {currentTrackId === 4 && <TreatyRoomSim isRunning={isRunning} testPassed={isTrackPassed} />}
+              {currentTrackId > 4 && (
+                <DynamicCustomSim
+                  title={currentTrack.title}
+                  era={currentTrack.era}
+                  civicsFocus={currentTrack.civicsFocus}
+                  stemFocus={currentTrack.stemFocus}
+                  testPassed={isTrackPassed}
+                />
+              )}
+            </div>
           )}
         </div>
 
-        {/* Bottom-Left: Monaco Code Editor */}
+        {/* Bottom-Left: Monaco Code Editor with Dual-Mode Visual Blocks */}
         <div className="h-full">
           <CodeEditor
             code={codes[currentTrackId] || currentTrack.starterCode}
@@ -275,6 +340,7 @@ export const App: React.FC = () => {
             onLoadSolution={handleLoadSolution}
             isRunning={isRunning}
             language="python"
+            trackId={currentTrackId}
           />
         </div>
 
@@ -287,6 +353,13 @@ export const App: React.FC = () => {
           />
         </div>
       </main>
+
+      {/* Classroom Faction Tournament Modal */}
+      <FactionTournamentModal
+        isOpen={isTournamentOpen}
+        onClose={() => setIsTournamentOpen(false)}
+        trackId={currentTrackId}
+      />
 
       {/* Verifiable Credential / Soulbound NFT Modal */}
       <CertificateBadgeModal

@@ -37,3 +37,11 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Standalone Executable Builds & Distribution Archives
+*.exe
+*.zip
+*.spec
+build/
+dist/
+frontend/dist/
